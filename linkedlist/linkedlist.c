@@ -1,25 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-typedef struct {
+typedef struct Node{
   int value;
   struct Node *next;
 } Node;
 
-typedef struct 
+typedef struct linkedlist
 {
     Node* head;
     Node* tail;
     int size;
 } linkedList;
 
-bool hasloop(linkedList a)
+bool hasloop(linkedList * a)
     {
-        Node* rabbit= a.head;
-        Node* tortoise= a.head;
+        Node* rabbit= (*a).head;
+        Node* tortoise= (*a).head;
         while(rabbit)
         {
-            if(rabbit->next=tortoise->next)
+            if(rabbit->next->next=tortoise->next)
             {
                 if(rabbit->value=tortoise->value)
                 {
