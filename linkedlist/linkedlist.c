@@ -36,6 +36,21 @@ bool hasloop(linkedList * a)
         return false;
     }
 
+void revLinkedListinPlace(Node* a)
+{
+    if((a->next)->next==NULL)
+    {
+        (a->next)->next=a
+        return
+    }
+    else
+    {
+        revLinkedListinPlace(a->next)
+    }
+    a->next->next=a
+    return
+}
+
 int main()
 {
     return 0;
