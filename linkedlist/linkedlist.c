@@ -38,9 +38,12 @@ bool hasloop(linkedList * a)
 
 void revLinkedListinPlace(Node* a)
 {
-    if((a->next)->next==NULL)
+    if(a->next==NULL)
+    {printf("Cannot reverse list of size 1")}
+    else if((a->next)->next==NULL)
     {
         (a->next)->next=a
+        a->next=NULL
         return
     }
     else
