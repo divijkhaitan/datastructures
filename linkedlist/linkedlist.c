@@ -16,6 +16,11 @@ typedef struct linkedlist
 void revLinkedListinPlace(Node* a);
 void addToFrontOfList(linkedList* a, int b);
 void printLL(linkedList* a);
+void printLLrev(linkedList* a);
+void addToBackOfList(linkedList* a, int b);
+void revlist(linkedList* a);
+linkedList* generateList(int size);
+
 
 bool hasloop(linkedList * a)
     {
@@ -94,7 +99,6 @@ void addToBackOfList(linkedList* a, int b)
     
 }
 
-
 void printLL(linkedList* a)
 {
     if(!(a->head))
@@ -131,6 +135,29 @@ void printLLrev(linkedList* a)
     return;
 }
 
+void revlist(linkedList* a)
+{
+    if((a->head)->next)
+    {
+        Node* temp = a->head;
+        Node* temp1 = a->head;
+        Node* temp2 = a->head->next;
+        while(temp2)
+        {
+            temp1 = temp2;
+            temp2 = temp2->next;
+            temp1->next = temp;
+            temp = temp1;
+        }
+        a->head->next = NULL;
+        // a->head = temp1; if you want to change positioning of head. This will also invalidate the need for the above statement
+    }
+    else
+    {
+        printf("List of size 1 is reversed by definition");
+    }
+}
+
 linkedList* generateList(int size)
 {
     linkedList* a = malloc(sizeof(linkedList));
@@ -146,7 +173,8 @@ int main()
 {
     linkedList* a = generateList(10);
     printLL(a);
-    revLinkedListinPlace(a->head);
+    revlist(a);
+    printLL(a);
     printLLrev(a);
     Node * temp = a->head; 
     Node * prev;
