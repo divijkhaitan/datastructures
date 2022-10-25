@@ -169,22 +169,57 @@ linkedList* generateList(int size)
     return a;
 }
 
+void printarray(int *a,int size)
+{
+    int i;
+    for(i = 0 ; i < size-1; i++)
+    {
+        printf("%d, ", a[i]);
+    }
+    printf("%d\n", a[i]);
+}
+
+void selectionsort(int* a, int size)
+{
+    int min, temp, t;
+    for (int i = 0; i < size ; i++)
+    {
+        temp = i;
+        for(int j = i; j < size ; j++)
+        {
+            temp = (a[temp]<a[j])? temp : j;
+        }
+        if(temp==i)
+        continue;
+        else
+        {
+            t = a[temp];
+            a[temp] = a[i];
+            a[i] = t;
+        }
+    }
+}
+
 int main()
 {
-    linkedList* a = generateList(10);
-    printLL(a);
-    revlist(a);
-    printLL(a);
-    printLLrev(a);
-    Node * temp = a->head; 
-    Node * prev;
-    while (temp)
-    {
-        prev = temp;
-        temp = temp ->next;
-        free(prev);
-    }
-    free(a);
+    // linkedList* a = generateList(10);
+    // printLL(a);
+    // revlist(a);
+    // printLL(a);
+    // printLLrev(a);
+    // Node * temp = a->head; 
+    // Node * prev;
+    // while (temp)
+    // {
+    //     prev = temp;
+    //     temp = temp ->next;
+    //     free(prev);
+    // }
+    // free(a);
+    int a[] = {17, 15, 164, 861, 362, 563, 14, 33, 280};
+    printarray(a, sizeof(a)/4);
+    selectionsort(a, sizeof(a)/4);
+    printarray(a, sizeof(a)/4);
     return 0;
 }
 
