@@ -42,22 +42,19 @@ bool hasloop(linkedList * a)
 
 void revLinkedListinPlace(Node* a)
 {
-    if(a->next==NULL)
+    if((a->next))
     {
-        printf("Cannot reverse list of size 1");
-    }
-    else if((a->next)->next==NULL)
-    {
-        (a->next)->next=a;
-        a->next=NULL;
-        return;
+        if(a->next->next)
+        {
+            revLinkedListinPlace(a->next);
+        }
+        a->next->next = a;
+        a->next = NULL;
     }
     else
     {
-        revLinkedListinPlace(a->next);
+        printf("List of Size 1 is reversed by defintion");
     }
-    a->next->next=a;
-    return;
 }
 
 void addToFrontOfList(linkedList* a, int b)
@@ -106,21 +103,41 @@ void printLL(linkedList* a)
         return;
     }
     Node * temp = a->head;
-    while (temp)
+    while (temp->next)
     {
-        printf("Value: %d\n",temp->value);
+        printf("%d, ",temp->value);
         temp = temp->next;
     }
+    printf("%d",temp->value);
+    printf("\n");
+    return;
+}
+
+void printLLrev(linkedList* a)
+{
+    if(!(a->tail))
+    {
+        printf("Empty List\n");
+        return;
+    }
+    Node * temp = a->tail;
+    while (temp->next)
+    {
+        printf("%d, ",temp->value);
+        temp = temp->next;
+    }
+    printf("%d",temp->value);
+    printf("\n");
     return;
 }
 
 linkedList* generateList(int size)
 {
     linkedList* a = malloc(sizeof(linkedList));
+    srand(time(NULL));
     for (int i = 0; i<size; i++)
     {
-        srand(time(0));
-        addToBackOfList(a,rand());
+        addToBackOfList(a,rand()%1000);
     }
     return a;
 }
@@ -129,7 +146,8 @@ int main()
 {
     linkedList* a = generateList(10);
     printLL(a);
-    printf("Printed LL\n");
+    revLinkedListinPlace(a->head);
+    printLLrev(a);
     Node * temp = a->head; 
     Node * prev;
     while (temp)
