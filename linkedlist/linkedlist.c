@@ -192,6 +192,7 @@ void revListChunks(linkedList *a, int n)
                 }            
                 else
                 {
+                    listleft=false;
                     break;
                 }         
             }
@@ -204,7 +205,7 @@ void revListChunks(linkedList *a, int n)
                 next = temp2;
                 (current)->next=temp;
                 current = temp;
-                for(int i=0;i<n-1;i++)
+                for(int i=0;i<count;i++)
                 {
                     current=current->next;
                 }
@@ -227,9 +228,9 @@ void revListChunks(linkedList *a, int n)
         }
         printf("Here\n");
         current->next=next;
-        // for(int i =0;i<count;i++)
+        // for(int i =0;i<count-1;i++)
         // {
-        //     current=current->next;
+        //      current=current->next;
         // }
         
     }
@@ -283,7 +284,7 @@ void selectionsort(int *a, int size)
 
 int main()
 {
-    linkedList *a = generateList(19);
+    linkedList *a = generateList(15);
     printLL(a);
     revListChunks(a, 5);
     printLL(a);
