@@ -163,33 +163,75 @@ void revlist(linkedList *a)
 void revListChunks(linkedList *a, int n)
 {
     Node* current;
+    Node* next;
+    int count;
+    bool listleft = true;
     if ((a->head)->next)
     {
         Node *temp = a->head;
         Node *temp1 = a->head;
         Node *temp2 = a->head->next;
         current = a->head;
-        for(int i=0;i<n;i++)
+        while(temp2 && listleft)
         {
-            temp1 = temp2;
-            temp2 = temp2->next;
-            temp1->next = temp;
-            if (temp == a->head)
-            {
-                a->head->next = NULL;
+            count=0;
+            for(int i=0;i<n-1;i++)
+            {   
+                count++;
+                temp1 = temp2;
+                temp2 = temp2->next;
+                temp1->next = temp;
+                if (temp == a->head)
+                {
+                    a->head->next = NULL;
+                }
+                temp = temp1;
+                if(temp2)
+                {
+                    continue;
+                }            
+                else
+                {
+                    break;
+                }         
             }
-            temp = temp1;
-            if(temp2)
+            if(current == a->head)
             {
-                continue;
-            }            
+                a->head = temp;
+            }
+            if(next)
+            {
+                next = temp2;
+                (current)->next=temp;
+                current = temp;
+                for(int i=0;i<n-1;i++)
+                {
+                    current=current->next;
+                }
+            }
             else
             {
+                next = temp2;
+            }
+            if(temp2)
+            {
+                temp1=temp2;
+                temp=temp1;
+                temp2=temp2->next;
+            }
+            else
+            {
+                listleft=false;
                 break;
-            }         
+            }
         }
-        (current)->next=temp2;
-        a->head = temp;
+        printf("Here\n");
+        current->next=next;
+        // for(int i =0;i<count;i++)
+        // {
+        //     current=current->next;
+        // }
+        
     }
     else
     {
@@ -241,9 +283,9 @@ void selectionsort(int *a, int size)
 
 int main()
 {
-    linkedList *a = generateList(5);
+    linkedList *a = generateList(19);
     printLL(a);
-    revListChunks(a, 3);
+    revListChunks(a, 5);
     printLL(a);
     //printLLrev(a);
     Node *temp = a->head;
