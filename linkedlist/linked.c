@@ -251,6 +251,17 @@ linkedList *generateList(int size)
     return a;
 }
 
+int* generateArray(int size)
+{
+    int *a = (int *)malloc(sizeof(int)*size);
+    srand(time(NULL));
+    for (int i = 0; i < size; i++)
+    {
+        a[i]= (rand() % 1000);
+    }
+    return a;
+}
+
 void printarray(int *a, int size)
 {
     int i;
@@ -282,25 +293,47 @@ void selectionsort(int *a, int size)
     }
 }
 
+void insort(int* a, int n)
+{
+    int ind, temp;
+    for(int i=1;i<n;i++)
+    {
+        ind = i;
+        temp = a[i];
+        for(int j = ind; j >0; j--)
+        {
+            if(a[j-1]>temp)
+            {
+                a[j] = a[j-1];
+                ind--;
+            }
+        }
+        a[ind] = temp;
+    }
+}
+
 int main()
 {
-    linkedList *a = generateList(15);
-    printLL(a);
-    revListChunks(a, 5);
-    printLL(a);
-    //printLLrev(a);
-    Node *temp = a->head;
-    Node *prev;
-    while (temp)
-    {
-        prev = temp;
-        temp = temp->next;
-        free(prev);
-    }
+    // linkedList *a = generateList(15);
+    // printLL(a);
+    // revListChunks(a, 5);
+    // printLL(a);
+    // //printLLrev(a);
+    // Node *temp = a->head;
+    // Node *prev;
+    // while (temp)
+    // {
+    //     prev = temp;
+    //     temp = temp->next;
+    //     free(prev);
+    // }(
+    // free(a);
+    int *a;
+    int size = 5;
+    a = generateArray(size);
+    printarray(a, size);
+    insort(a, size);
+    printarray(a, size);
     free(a);
-    // int a[] = {17, 15, 164, 861, 362, 563, 14, 33, 280};
-    // printarray(a, sizeof(a)/4);
-    // selectionsort(a, sizeof(a)/4);
-    // printarray(a, sizeof(a)/4);
-    // return 0;
+    return 0;
 }
