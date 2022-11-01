@@ -21,6 +21,13 @@ void printLLrev(linkedList *a);
 void addToBackOfList(linkedList *a, int b);
 void revlist(linkedList *a);
 linkedList *generateList(int size);
+int* generateArray(int size);
+void printarray(int *a, int size);
+void selectionsort(int *a, int size);
+void insort(int* a, int n);
+int part(int* a, int start, int end);
+void quicksort(int* a, int s, int e);
+
 
 bool hasloop(linkedList *a)
 {
@@ -312,6 +319,46 @@ void insort(int* a, int n)
     }
 }
 
+int part(int* a, int start, int end)
+{
+    int pivind = (rand() %(end-start+1)) + start;
+    //int pivind = end;
+    int temp = a[start];
+    a[start] = a[pivind];
+    a[pivind] = temp;
+    int pivot = a[start];
+    int i = start+1;
+    int j = end;
+    while (i<=j)
+    {
+        if(a[i]>pivot)
+        {
+            temp = a[i];
+            a[i] = a[j];
+            a[j] = temp;
+            j--;
+        }
+        else
+        {
+            i++;
+        }
+    }
+    temp = a[j];
+    a[j] = a[start];
+    a[start] = temp;
+    return j;
+}
+
+void quicksort(int* a, int s, int e)
+{
+    if(s<e)
+    {
+        int p = part(a, s, e);
+        quicksort(a, s, p-1);
+        quicksort(a, p+1, e);
+    }
+}
+
 int main()
 {
     // linkedList *a = generateList(15);
@@ -329,10 +376,10 @@ int main()
     // }(
     // free(a);
     int *a;
-    int size = 5;
+    int size = 10;
     a = generateArray(size);
     printarray(a, size);
-    insort(a, size);
+    quicksort(a, 0, size-1);
     printarray(a, size);
     free(a);
     return 0;
