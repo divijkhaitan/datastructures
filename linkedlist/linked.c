@@ -304,6 +304,7 @@ void selectionsort(int *a, int size)
         }
     }
 }
+
 void selectionsortlist(linkedList *a)
 {
     int t, min;
@@ -326,7 +327,6 @@ void selectionsortlist(linkedList *a)
     }
 }
 
-
 void insort(int* a, int n)
 {
     int ind, temp;
@@ -334,7 +334,7 @@ void insort(int* a, int n)
     {
         ind = i;
         temp = a[i];
-        for(int j = ind; j >0; j--)
+        for(int j = ind; j > 0; j--)
         {
             if(a[j-1]>temp)
             {
@@ -343,6 +343,35 @@ void insort(int* a, int n)
             }
         }
         a[ind] = temp;
+    }
+}
+
+void insortlist(linkedList* a)
+{
+    int t, temporary;
+    bool foundsmallest;
+    Node* ind, *temp, *j;
+    for(Node* i=(a->head)->next;i!=NULL;i=i->next)
+    {
+        ind = i;
+        foundsmallest = false;
+        t = i->value;
+        for(j = a->head; j!=i; j=j->next)
+        {
+            if(j->value > t)
+            {
+                foundsmallest = true;
+                break;
+            }
+        }
+        while (j!=i && foundsmallest)
+        {
+            temporary = j->value;
+            j->value = t;
+            t = temporary;
+            j = j->next;
+        }
+        j->value = t;
     }
 }
 
@@ -390,10 +419,9 @@ int main()
 {
     linkedList *a = generateList(15);
     printLL(a);
-    selectionsortlist(a);
+    insortlist(a);
     //selectionsortlist(a);
     printLL(a);
-    //printLLrev(a);
     Node *temp = a->head;
     Node *prev;
     while (temp)
@@ -403,11 +431,12 @@ int main()
         free(prev);
     }
     free(a);
-    // int *a;
+    //int *a;
     // int size = 10;
     // a = generateArray(size);
+    // int a[] = { 4,3,2,7,11,23,16,1,5,6 };
     // printarray(a, size);
-    // quicksort(a, 0, size-1);
+    // insort(a, size);
     // printarray(a, size);
     // free(a);
     // return 0;
