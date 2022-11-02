@@ -250,6 +250,11 @@ void revListChunks(linkedList *a, int n)
 linkedList *generateList(int size)
 {
     linkedList *a = malloc(sizeof(linkedList));
+    //The bottom two statments need to be added because malloc works differently in windows and linux
+    //In a linux machine, mallocing a linkedlist gives you null head and tail pointers while in windows it initialises
+    //head and tail pointers with some value, thus a->tail-> next gives a segmentation fault
+    a->head = NULL;
+    a->tail = NULL;
     srand(time(NULL));
     for (int i = 0; i < size; i++)
     {
@@ -299,6 +304,28 @@ void selectionsort(int *a, int size)
         }
     }
 }
+void selectionsortlist(linkedList *a)
+{
+    int t, min;
+    Node* temp;
+    for (Node* i = a->head;  i!=NULL; i=i->next)
+    {
+        temp = i;
+        for (Node* j = i; j!=NULL; j=j->next)
+        {
+            temp = (temp->value < j->value) ? temp : j;
+        }
+        if (temp == i)
+            continue;
+        else
+        {
+            t = temp->value;
+            temp->value = i->value;
+            i->value = t;
+        }
+    }
+}
+
 
 void insort(int* a, int n)
 {
@@ -361,26 +388,27 @@ void quicksort(int* a, int s, int e)
 
 int main()
 {
-    // linkedList *a = generateList(15);
-    // printLL(a);
-    // revListChunks(a, 5);
-    // printLL(a);
-    // //printLLrev(a);
-    // Node *temp = a->head;
-    // Node *prev;
-    // while (temp)
-    // {
-    //     prev = temp;
-    //     temp = temp->next;
-    //     free(prev);
-    // }(
-    // free(a);
-    int *a;
-    int size = 10;
-    a = generateArray(size);
-    printarray(a, size);
-    quicksort(a, 0, size-1);
-    printarray(a, size);
+    linkedList *a = generateList(15);
+    printLL(a);
+    selectionsortlist(a);
+    //selectionsortlist(a);
+    printLL(a);
+    //printLLrev(a);
+    Node *temp = a->head;
+    Node *prev;
+    while (temp)
+    {
+        prev = temp;
+        temp = temp->next;
+        free(prev);
+    }
     free(a);
-    return 0;
+    // int *a;
+    // int size = 10;
+    // a = generateArray(size);
+    // printarray(a, size);
+    // quicksort(a, 0, size-1);
+    // printarray(a, size);
+    // free(a);
+    // return 0;
 }
