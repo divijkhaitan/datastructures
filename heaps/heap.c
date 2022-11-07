@@ -7,6 +7,8 @@ void heapifydown(int*a , int n);
 
 void siftup(int *a,int i, int n);
 
+void insert(int*a, int *n, int i);
+
 int* generateArray(int size);
 
 void heapifyup(int *a, int n);
@@ -23,7 +25,8 @@ int main()
     //int a[] = {596,43,83,829,352,192,971,467,464,72};
     printarray(a,size );
     make_heap(a,size );
-    // a[size-1] = 1001;
+    insert(a,&size,1001);
+    insert(a,&size,2000);
     // siftup(a,size-1,10);
     printarray(a,size );
     free(a);
@@ -105,6 +108,15 @@ void siftup(int *a, int i, int n)
         siftup(a , parind, n);
     }
     return;
+}
+
+void insert(int*a, int *n, int i)
+{
+    //not functioning, fairly certain this is a windows problem
+    a = (int*)realloc(a,*n+1*sizeof(int));
+    a[*n] = i;
+    *n+=1;
+    siftup(a,*n-1,*n);
 }
 
 // void heapifyup(int *a, int i, int n)
