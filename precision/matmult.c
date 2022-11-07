@@ -10,7 +10,7 @@ void matmult(int row_a,int col_a,int row_b, int col_b)
     {
         for (int j = 0; j < col_a; j++)
         {
-            printf("Enter the entry at index %d, %d of the first array", i+1,j+1);
+            printf("Enter the entry at index %d, %d of the first array: ", i+1,j+1);
             scanf("%d", &(a[i][j]));
         }
         
@@ -19,7 +19,7 @@ void matmult(int row_a,int col_a,int row_b, int col_b)
     {
         for (int j = 0; j < col_b; j++)
         {
-            printf("Enter the entry at index %d, %d of the second array", i+1,j+1);
+            printf("Enter the entry at index %d, %d of the second array: ", i+1,j+1);
             scanf("%d", &(b[i][j]));
         }
         
@@ -31,7 +31,7 @@ void matmult(int row_a,int col_a,int row_b, int col_b)
             c[i][j]=0;
             for(int k=0; k<row_b;k++)
             {
-                c[i][j]+=a[i][k]+b[k][j];
+                c[i][j]+=(a[i][k]*b[k][j]);
             }
         }
     }
@@ -39,7 +39,7 @@ void matmult(int row_a,int col_a,int row_b, int col_b)
     {
         for (int j = 0; j < col_b; j++)
         {
-            printf("%d", c[i][j]);
+            printf("%d  ", c[i][j]);
         }
         printf("\n");
     }
@@ -48,12 +48,12 @@ void matmult(int row_a,int col_a,int row_b, int col_b)
 
 int main()
 {
-    printf("Enter Dimensions of first matrix");
+    printf("Enter Dimensions of first matrix: ");
     int rowsize_a;
     int colsize_a;
     scanf("%d",&(rowsize_a));
     scanf("%d",&(colsize_a));
-    printf("Enter Dimensions of second matrix");
+    printf("Enter Dimensions of second matrix: ");
     int rowsize_b;
     int colsize_b;
     scanf("%d",&(rowsize_b));
