@@ -25,7 +25,9 @@ int main()
     //int a[] = {596,43,83,829,352,192,971,467,464,72};
     printarray(a,size );
     make_heap(a,size );
+    printarray(a,size );
     insert(a,&size,1001);
+    printarray(a,size );
     insert(a,&size,2000);
     // siftup(a,size-1,10);
     printarray(a,size );
@@ -71,11 +73,20 @@ void make_heap(int *a, int n)
 void siftdown(int *a,int i, int n)
 {
     int temp = 0;
+    int maxchild = 0;
     if(i>=n || 2*i+1>=n)
     {
         return;
     }
-    int maxchild = a[2*i+1]>a[2*i+2] ? 2*i+1 : 2*i+2; 
+
+    if(a[2*i+2]>=n)
+    {
+        maxchild = 2*i+1;
+    }
+    else
+    {
+        maxchild = a[2*i+1]>a[2*i+2] ? 2*i+1 : 2*i+2;
+    } 
     if( a[i] < a[maxchild] )
     {
         temp = a[i];
