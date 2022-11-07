@@ -3,15 +3,13 @@
 #include<time.h>
 void siftdown(int*a,int i, int n);
 
-void heapifydown(int*a , int n);
-
 void siftup(int *a,int i, int n);
 
 void insert(int*a, int *n, int i);
 
-int* generateArray(int size);
+int extract_max(int*a, int *n);
 
-void heapifyup(int *a, int n);
+int* generateArray(int size);
 
 void printarray(int *a, int size);
 
@@ -30,6 +28,9 @@ int main()
     printarray(a,size );
     insert(a,&size,2000);
     // siftup(a,size-1,10);
+    printarray(a,size );
+    printf("%d\n",extract_max(a,&size));
+    printf("%d\n",extract_max(a,&size));
     printarray(a,size );
     free(a);
     return 0;
@@ -79,7 +80,7 @@ void siftdown(int *a,int i, int n)
         return;
     }
 
-    if(a[2*i+2]>=n)
+    if(2*i+2>=n)
     {
         maxchild = 2*i+1;
     }
@@ -97,11 +98,6 @@ void siftdown(int *a,int i, int n)
     }
     return;
 }
-
-// void heapifydown(int*a , int n)
-// {
-
-// }
 
 void siftup(int *a, int i, int n)
 {
@@ -130,7 +126,15 @@ void insert(int*a, int *n, int i)
     siftup(a,*n-1,*n);
 }
 
-// void heapifyup(int *a, int i, int n)
-// {
-    
-// }
+int extract_max(int*a, int *n)
+{
+    int x = a[0];
+    int y = *n-1*sizeof(int);
+    //printf("%d\n",y);
+    a[0] = a[*n-1];
+    a[*n-1] = 0; 
+    //a = realloc(a,(*n-1)*sizeof(int));
+    *n-=1;
+    siftdown(a,0,*n);
+    return x;
+}
