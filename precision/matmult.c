@@ -3,6 +3,8 @@
 
 void matmult(int row_a,int col_a,int row_b, int col_b)
 {
+    //The following program works perfectly on a linux VM. For a reason I cannot figure out, the windows compiler does
+    //not allow the initialisation of arrays with the declared size being a variable
     int a[row_a][col_a];
     int b[row_b][col_b];
     int c[row_a][col_b];
