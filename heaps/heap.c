@@ -5,7 +5,7 @@ void siftdown(int*a,int i, int n);
 
 void heapifydown(int*a , int n);
 
-void siftup(int *a, int n);
+void siftup(int *a,int i, int n);
 
 int* generateArray(int size);
 
@@ -17,15 +17,16 @@ void make_heap(int*a, int n);
 
 int main()
 {
-    //int *a;
+    int *a;
     int size = 10;
-    //a = generateArray(size);
-    int a[] = {596,43,83,829,352,192,971,467,464,72};
+    a = generateArray(size);
+    //int a[] = {596,43,83,829,352,192,971,467,464,72};
     printarray(a,size );
     make_heap(a,size );
-    printf("Here\n");
+    // a[size-1] = 1001;
+    // siftup(a,size-1,10);
     printarray(a,size );
-    //free(a);
+    free(a);
     return 0;
 }
 int* generateArray(int size)
@@ -75,7 +76,7 @@ void siftdown(int *a,int i, int n)
     if( a[i] < a[maxchild] )
     {
         temp = a[i];
-        
+
         a[i] = a[maxchild];
         a[maxchild] = temp;
         siftdown(a , maxchild, n);
@@ -88,10 +89,23 @@ void siftdown(int *a,int i, int n)
 
 // }
 
-// void siftup(int *a, int n)
-// {
-
-// }
+void siftup(int *a, int i, int n)
+{
+    int temp = 0;
+    int parind = (i-1)/2;
+    if(i==0||i>=n || (i-1)/2>=n)
+    {
+        return;
+    }
+    if( a[i] > a[parind] )
+    {
+        temp = a[i];
+        a[i] = a[parind];
+        a[parind] = temp;
+        siftup(a , parind, n);
+    }
+    return;
+}
 
 // void heapifyup(int *a, int i, int n)
 // {
