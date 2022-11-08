@@ -20,6 +20,7 @@ tree* maketree(int*a, int n);
 void printarray(int* a, int size);
 int* generateArray(int size);
 void printinorder(node* a);
+node* search(tree*a, int n);
 node* inorder_successor(node*a);
 node* inorder_predeccessor(node* a);
 node* maxchild(node* a);
@@ -36,7 +37,9 @@ int main()
     printarray(arr,size);
     tree* a= maketree(arr,size);
     printinorder(a->root);
-    node* temp = a->root;
+    node* temp =search(a, arr[size-1]);
+    delete(temp);
+    printinorder(a->root);
     return 0;
 }
 
@@ -287,6 +290,15 @@ void delete(node* b)
     {
         node* succ = inorder_successor(b);
         b->val = succ->val;
+        if(succ->parent->right = succ)
+        {
+            succ->parent->right = NULL;
+        }
+        else if(succ->parent->left = succ)
+        {
+            succ->parent->left = NULL;
+        }
+        free(succ);
     }
 }
 
@@ -337,4 +349,25 @@ int getheight(node* a)
         int height = l > r ? l : r;
         return height;
     }
+}
+
+node* search(tree*a, int n)
+{
+    node* temp = a->root;
+    while(temp)
+    {
+        if(temp->val > n)
+        {
+            temp = temp->left;
+        }
+        else if(temp->val < n)
+        {
+            temp = temp->right;
+        }
+        else if(temp->val == n)
+        {
+            return temp;
+        }
+    }
+    return NULL;
 }
