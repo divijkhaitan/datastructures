@@ -25,7 +25,7 @@ node* inorder_successor(node*a);
 node* inorder_predeccessor(node* a);
 node* maxchild(node* a);
 node* minchild(node* a);
-void delete(node* b);
+void delete(tree* a,node* b);
 int nodeheight(node *a);
 int updateheight(node* a);
 int getheight(node* a);
@@ -37,8 +37,9 @@ int main()
     printarray(arr,size);
     tree* a= maketree(arr,size);
     printinorder(a->root);
-    node* temp =search(a, arr[size-1]);
-    delete(temp);
+    printf("Inorder print 1\n");
+    node* temp =search(a, a->root->val);
+    delete(a, temp);
     printinorder(a->root);
     return 0;
 }
@@ -264,10 +265,18 @@ node* minchild(node* a)
     return a;
 }
 
-void delete(node* b)
+void delete(tree* a,node* b)
 {
     if(b->left==NULL && b->right==NULL)
     {
+        if(b->parent->right == b)
+        {
+            b->parent->right = NULL;
+        }
+        else if(b->parent->left == b)
+        {
+            b->parent->left = NULL;
+        }
         free(b);
         b==NULL;
     }
@@ -290,11 +299,11 @@ void delete(node* b)
     {
         node* succ = inorder_successor(b);
         b->val = succ->val;
-        if(succ->parent->right = succ)
+        if(succ->parent->right == succ)
         {
             succ->parent->right = NULL;
         }
-        else if(succ->parent->left = succ)
+        else if(succ->parent->left == succ)
         {
             succ->parent->left = NULL;
         }
