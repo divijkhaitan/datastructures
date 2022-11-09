@@ -29,21 +29,22 @@ void delete(tree* a,node* b);
 int nodeheight(node *a);
 int updateheight(node* a);
 int getheight(node* a);
+void leftrotate(tree *a, node* b);
 
 int main()
 {
     srand(time(NULL));
-    int size = 5;
-    int arr[5]= {154,651,15,602,277};
-    //int* arr = generateArray(size);
+    int size = 7;
+    //int arr[6]= {50,70,60,80,40,90};
+    int* arr = generateArray(size);
     printarray(arr,size);
     tree* a= maketree(arr,size);
     printinorder(a->root);
-    printf("Inorder print 1\n");
-    //node* temp =search(a, arr[rand()%size]);
-    node* temp =search(a, 602);
+    printf("\n");
+    node* temp =search(a, arr[rand()%size]);
     printf("%d\n",temp->val);
     delete(a, temp);
+    //leftrotate(a,a->root);
     printinorder(a->root);
     return 0;
 }
@@ -336,6 +337,7 @@ void delete(tree* a,node* b)
         else if(b->right)
         {
             b->val = b->right->val;
+            free(b->right);
             b->right = NULL;
             updateheight(b);
             while (b->parent)
@@ -354,8 +356,6 @@ void delete(tree* a,node* b)
                 }
                 b=b->parent;
             }
-            free(b->right);
-            
         }
     }
     else
@@ -430,13 +430,13 @@ int getheight(node* a)
 {
     if(a==NULL)
     {
-        return 0;
+        return -1;
     }
     else
     {
         int l = getheight(a->left);
         int r = getheight(a->right);
-        int height = l > r ? l : r;
+        int height = l > r ? l+1 : r+1;
         return height;
     }
 }
@@ -460,4 +460,22 @@ node* search(tree*a, int n)
         }
     }
     return NULL;
+}
+
+void leftrotate(tree *a, node* b)
+{
+    node* lc = b->left;
+    node* rc = b->right;
+    node* temp = NULL;
+    b->right = rc->left;
+    rc->left->parent = b;
+    rc->left = b;
+    rc->parent = b->parent;
+    b->parent = rc;
+    b->height = getheight(b);
+    rc->height = (b->height>rc->right->height)?b->height+1:rc->right->height+1;
+    if(b==a->root)
+    {
+        a->root = rc;
+    }
 }
