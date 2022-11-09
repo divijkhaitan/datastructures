@@ -32,13 +32,17 @@ int getheight(node* a);
 
 int main()
 {
-    int size = 10;
-    int* arr = generateArray(size);
+    srand(time(NULL));
+    int size = 5;
+    int arr[5]= {154,651,15,602,277};
+    //int* arr = generateArray(size);
     printarray(arr,size);
     tree* a= maketree(arr,size);
     printinorder(a->root);
     printf("Inorder print 1\n");
-    node* temp =search(a, a->root->val);
+    //node* temp =search(a, arr[rand()%size]);
+    node* temp =search(a, 602);
+    printf("%d\n",temp->val);
     delete(a, temp);
     printinorder(a->root);
     return 0;
@@ -169,7 +173,6 @@ void printarray(int *a, int size)
 int* generateArray(int size)
 {
     int *a = (int *)malloc(sizeof(int)*size);
-    srand(time(NULL));
     for (int i = 0; i < size; i++)
     {
         a[i]= (rand() % 1000);
@@ -184,6 +187,7 @@ void printinorder(node* a)
         printinorder(a->left);
     }
     printf("%d\t", a->val);
+    printf("%d\n", a->height);
     if(a->right)
     {
         printinorder(a->right);
@@ -267,6 +271,11 @@ node* minchild(node* a)
 
 void delete(tree* a,node* b)
 {
+    int h;
+    if(b==NULL)
+    {
+        return;
+    }
     if(b->left==NULL && b->right==NULL)
     {
         if(b->parent->right == b)
@@ -277,8 +286,26 @@ void delete(tree* a,node* b)
         {
             b->parent->left = NULL;
         }
-        free(b);
-        b==NULL;
+        updateheight(b->parent);
+        node* b1 = b;
+        b = b->parent;
+        while (b->parent)
+        {
+            if(b->parent->left==b)
+            {
+                h = (b->parent->right)?b->parent->right->height : 0;
+            }
+            if(b->parent->right==b)
+            {
+                h = (b->parent->left)?b->parent->left->height : 0;
+            }
+            if(h<=b->height)
+            {
+                b->parent->height = b->height+1;
+            }
+            b=b->parent;
+        }
+        free(b1);
     }
     else if ( (b->left==NULL) ^ (b->right==NULL))
     {
@@ -287,12 +314,48 @@ void delete(tree* a,node* b)
             b->val = b->left->val;
             free(b->left);
             b->left = NULL;
+            updateheight(b);
+            while (b->parent)
+            {
+                if(b->parent->left==b)
+                {
+                    h = (b->parent->right)?b->parent->right->height : 0;
+                }
+                if(b->parent->right==b)
+                {
+                    h = (b->parent->left)?b->parent->left->height : 0;
+                }
+                if(h<=b->height)
+                {
+                    b->parent->height = b->height+1;
+                }
+                b=b->parent;
+            }
+            
         }
-        if(b->right)
+        else if(b->right)
         {
             b->val = b->right->val;
-            free(b->right);
             b->right = NULL;
+            updateheight(b);
+            while (b->parent)
+            {
+                if(b->parent->left==b)
+                {
+                    h = (b->parent->right)?b->parent->right->height : 0;
+                }
+                if(b->parent->right==b)
+                {
+                    h = (b->parent->left)?b->parent->left->height : 0;
+                }
+                if(h<=b->height)
+                {
+                    b->parent->height = b->height+1;
+                }
+                b=b->parent;
+            }
+            free(b->right);
+            
         }
     }
     else
@@ -307,7 +370,25 @@ void delete(tree* a,node* b)
         {
             succ->parent->left = NULL;
         }
+        node* succ2 = succ->parent;
         free(succ);
+        updateheight(succ2);
+        while (succ2->parent)
+        {
+            if(succ2->parent->left==succ2)
+            {
+                h = (succ2->parent->right)?succ2->parent->right->height : 0;
+            }
+            if(succ2->parent->right==succ2)
+            {
+                h = (succ2->parent->left)?succ2->parent->left->height : 0;
+            }
+            if(h<=succ2->height)
+            {
+                succ2->parent->height = succ2->height+1;
+            }
+            succ2=succ2->parent;
+        }
     }
 }
 
