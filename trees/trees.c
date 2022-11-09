@@ -29,16 +29,16 @@ void delete(tree* a,node* b);
 int nodeheight(node *a);
 int updateheight(node* a);
 int getheight(node* a);
-void leftrotate(tree *a, node* b);
-void rightrotate(tree *a, node* b);
+node* leftrotate(tree *a, node* b);
+node* rightrotate(tree *a, node* b);
 void balance(tree* a, node* b);
 
 int main()
 {
     srand(time(NULL));
-    int size = 3;
-    int arr[3]= {1,3,2};
-    //int* arr = generateArray(size);
+    int size = 10;
+    //int arr[3]= {1,3,2};
+    int* arr = generateArray(size);
     printarray(arr,size);
     tree* a= maketree(arr,size);
     printinorder(a->root);
@@ -474,7 +474,7 @@ node* search(tree*a, int n)
     return NULL;
 }
 
-void leftrotate(tree *a, node* b)
+node* leftrotate(tree *a, node* b)
 {
     node* lc = b->left;
     node* rc = b->right;
@@ -486,6 +486,14 @@ void leftrotate(tree *a, node* b)
     }
     rc->left = b;
     rc->parent = b->parent;
+    if(b->parent &&b->parent->right==b)
+    {
+        b->parent->right = rc;
+    }
+    else if (b->parent && b->parent->left==b)
+    {
+        b->parent->left = rc;
+    }
     b->parent = rc;
     b->height = getheight(b);
     int branchheight = getheight((rc->right));
@@ -494,9 +502,10 @@ void leftrotate(tree *a, node* b)
     {
         a->root = rc;
     }
+    return rc;
 }
 
-void rightrotate(tree *a, node* b)
+node* rightrotate(tree *a, node* b)
 {
     node* lc = b->left;
     node* rc = b->right;
@@ -508,6 +517,14 @@ void rightrotate(tree *a, node* b)
     }
     lc->right = b;
     lc->parent = b->parent;
+    if(b->parent && b->parent->right==b)
+    {
+        b->parent->right = lc;
+    }
+    else if (b->parent && b->parent->left==b)
+    {
+        b->parent->left = lc;
+    }
     b->parent = lc;
     b->height = getheight(b);
     int branchheight = getheight((lc->left));
@@ -516,6 +533,7 @@ void rightrotate(tree *a, node* b)
     {
         a->root = lc;
     }
+    return lc;
 }
 
 void balance(tree* a, node* b)
@@ -530,7 +548,7 @@ void balance(tree* a, node* b)
     if(leftsize-rightsize>1)
     {
         childleft = (b->left->left)?b->left->left->height+1:0;
-        childleft = (b->left->right)?b->left->right->height+1:0;
+        childright = (b->left->right)?b->left->right->height+1:0;
         if(childleft>=childright)
         {
             rightrotate(a,b);
@@ -538,15 +556,15 @@ void balance(tree* a, node* b)
         }
         else
         {
-            leftrotate(a,b->left);
-            rightrotate(a,b);
+            b = leftrotate(a,b->left);
+            b = rightrotate(a,b->parent);
             balance(a,b->parent);
         }
     }
     else if(leftsize-rightsize<-1)
     {
         childleft = (b->right->left)?b->right->left->height:0;
-        childleft = (b->right->right)?b->right->right->height:0;
+        childright = (b->right->right)?b->right->right->height:0;
         if(childleft>=childright)
         {
             leftrotate(a,b);
@@ -554,8 +572,8 @@ void balance(tree* a, node* b)
         }
         else
         {
-            rightrotate(a,b->left);
-            leftrotate(a,b);
+            b = rightrotate(a,b->left);
+            b = leftrotate(a,b->parent);
             balance(a,b->parent);
         }
     }
