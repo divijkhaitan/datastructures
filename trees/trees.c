@@ -43,11 +43,11 @@ int main()
     tree* a= maketree(arr,size);
     printinorder(a->root);
     printf("\n");
-    //node* temp =search(a, arr[rand()%size]);
-    //printf("%d\n",temp->val);
-    //delete(a, temp);
+    node* temp =search(a, arr[rand()%size]);
+    printf("%d\n",temp->val);
+    delete(a, temp);
     //rightrotate(a,a->root);
-    //printinorder(a->root);
+    printinorder(a->root);
     return 0;
 }
 
@@ -313,6 +313,7 @@ void delete(tree* a,node* b)
             }
             b=b->parent;
         }
+        balance(a,b1);
         free(b1);
     }
     else if ( (b->left==NULL) ^ (b->right==NULL))
@@ -322,6 +323,7 @@ void delete(tree* a,node* b)
             b->val = b->left->val;
             free(b->left);
             b->left = NULL;
+            node* b1 = b;
             updateheight(b);
             while (b->parent)
             {
@@ -339,13 +341,14 @@ void delete(tree* a,node* b)
                 }
                 b=b->parent;
             }
-            
+            balance(a,b1);
         }
         else if(b->right)
         {
             b->val = b->right->val;
             free(b->right);
             b->right = NULL;
+            node* b1 = b;
             updateheight(b);
             while (b->parent)
             {
@@ -363,6 +366,7 @@ void delete(tree* a,node* b)
                 }
                 b=b->parent;
             }
+            balance(a,b1);
         }
     }
     else
@@ -378,7 +382,6 @@ void delete(tree* a,node* b)
             succ->parent->left = NULL;
         }
         node* succ2 = succ->parent;
-        free(succ);
         updateheight(succ2);
         while (succ2->parent)
         {
@@ -396,6 +399,8 @@ void delete(tree* a,node* b)
             }
             succ2=succ2->parent;
         }
+        balance(a,succ);
+        free(succ);
     }
 }
 
