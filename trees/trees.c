@@ -36,7 +36,7 @@ void balance(tree* a, node* b);
 int main()
 {
     srand(time(NULL));
-    int size = 10;
+    int size = 7;
     //int arr[3]= {1,3,2};
     int* arr = generateArray(size);
     printarray(arr,size);
@@ -45,7 +45,7 @@ int main()
     printf("\n");
     node* temp =search(a, arr[rand()%size]);
     printf("%d\n",temp->val);
-    delete(a, temp);
+    delete(a, a->root);
     //rightrotate(a,a->root);
     printinorder(a->root);
     return 0;
@@ -572,7 +572,7 @@ void balance(tree* a, node* b)
         }
         else
         {
-            b = rightrotate(a,b->left);
+            b = rightrotate(a,b->right);
             b = leftrotate(a,b->parent);
             balance(a,b->parent);
         }
