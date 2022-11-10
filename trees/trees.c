@@ -36,15 +36,25 @@ void balance(tree* a, node* b);
 int main()
 {
     srand(time(NULL));
-    int size = 7;
+    int size,t;
+    printf("Enter number of values in tree: ");
+    scanf("%d", &size);
     //int arr[3]= {1,3,2};
-    int* arr = generateArray(size);
-    printarray(arr,size);
-    tree* a= maketree(arr,size);
+    //int* arr = generateArray(size);
+    //printarray(arr,size);
+    tree* a = malloc(sizeof(tree));
+    a->root = NULL;
+    for(int i = 0; i < size; i++)
+    {
+        printf("Enter node value");
+        scanf("%d", &t);
+        insert(a,t);
+    }
+    //tree* a= maketree(arr,size);
     printinorder(a->root);
     printf("\n");
-    node* temp =search(a, arr[rand()%size]);
-    printf("%d\n",temp->val);
+    //node* temp =search(a, arr[rand()%size]);
+    //printf("%d\n",temp->val);
     delete(a, a->root);
     //rightrotate(a,a->root);
     printinorder(a->root);

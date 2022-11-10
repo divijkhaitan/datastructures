@@ -35,6 +35,7 @@ int main()
     free(a);
     return 0;
 }
+
 int* generateArray(int size)
 {
     int *a = (int *)malloc(sizeof(int)*size);
@@ -45,7 +46,6 @@ int* generateArray(int size)
     }
     return a;
 }
-
 
 void printarray(int *a, int size)
 {
@@ -69,7 +69,6 @@ void make_heap(int *a, int n)
         siftdown(a, i, n);
     }
 }
-
 
 void siftdown(int *a,int i, int n)
 {

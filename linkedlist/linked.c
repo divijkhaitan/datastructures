@@ -15,6 +15,7 @@ typedef struct linkedlist
 } linkedList;
 
 void revLinkedListinPlace(Node *a);
+void printhalf(linkedList *a);
 void addToFrontOfList(linkedList *a, int b);
 void printLL(linkedList *a);
 void printLLrev(linkedList *a);
@@ -67,6 +68,23 @@ void revLinkedListinPlace(Node *a)
     {
         printf("List of Size 1 is reversed by defintion");
     }
+}
+
+void printhalf(linkedList *a)
+{
+    Node* hare = a->head;
+    Node* tortise = a->head;
+    while(tortise)
+    {
+        printf("%d ", hare->value);
+        hare = hare->next;
+        tortise = tortise ->next;
+        if(tortise)
+        {
+            tortise = tortise->next;
+        }
+    }
+    printf("\n");
 }
 
 void addToFrontOfList(linkedList *a, int b)
@@ -417,9 +435,23 @@ void quicksort(int* a, int s, int e)
 
 int main()
 {
-    linkedList *a = generateList(15);
+    int size;
+    int t;
+    linkedList *a = malloc(sizeof(linkedList));
+    a->head = NULL;
+    a->tail = NULL;
+    printf("Enter number of values in list: ");
+    scanf("%d", &size);
+    for(int i = 0; i < size; i++)
+    {
+        printf("Enter node value: ");
+        scanf("%d", &t);
+        addToBackOfList(a,t);
+    }
+    //linkedList *a = generateList(15);
     printLL(a);
     insortlist(a);
+    printhalf(a);
     //selectionsortlist(a);
     printLL(a);
     Node *temp = a->head;
