@@ -46,7 +46,7 @@ int main()
     a->root = NULL;
     for(int i = 0; i < size; i++)
     {
-        printf("Enter node value");
+        printf("Enter node value: ");
         scanf("%d", &t);
         insert(a,t);
     }
