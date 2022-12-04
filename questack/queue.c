@@ -8,27 +8,27 @@ typedef struct Node
     struct Node *next;
 } Node;
 
-typedef struct stack
+typedef struct queue
 {
     Node *head;
     Node *tail;
     int size;
     int n;
-} stack;
+} queue;
 
-void printStack(stack *a);
-void push(stack *a, int b);
-stack *generateStack(int size);
+void printqueue(queue *a);
+void push(queue *a, int b);
+queue *generatequeue(int size);
 int* generateArray(int size);
 void printarray(int *a, int size);
-int pop(stack* a);
-int peek(stack* a);
+int pop(queue* a);
+int peek(queue* a);
 
-int pop(stack* a)
+int pop(queue* a)
 {
     if(a->n == 0)
     {
-        printf("stack underflow");
+        printf("queue underflow");
         return 0;
     }
     int n = a->head->value;
@@ -39,21 +39,29 @@ int pop(stack* a)
     return n;
 }
 
-void push(stack *a, int b)
+void push(queue *a, int b)
 {
     if(a->size == a->n)
     {
-        printf("Stack overflow");
+        printf("queue overflow");
         return;
     }
     Node *temp = malloc(sizeof(Node));
     temp->value = b;
-    temp->next = a->head;
-    a->head = temp;
+    temp->next = NULL;
+    if(a->head==NULL)
+    {
+        a->head = temp;
+    }
+    if(a->tail)
+    {
+        a->tail->next = temp;
+    }
+    a->tail = temp;
     a->n +=1;
 }
 
-int peek(stack *a)
+int peek(queue *a)
 {
     if(a->head)
     {
@@ -61,11 +69,11 @@ int peek(stack *a)
     }
     else
     {
-        printf("stack underflow");
+        printf("queue underflow");
     }
 }
 
-void printStack(stack *a)
+void printqueue(queue *a)
 {
     if (!(a->head))
     {
@@ -83,15 +91,15 @@ void printStack(stack *a)
     return;
 }
 
-stack *generateStack(int size)
+queue *generatequeue(int size)
 {
-    stack *a = malloc(sizeof(stack));
+    queue *a = malloc(sizeof(queue));
     //The bottom two statments need to be added because malloc works differently in windows and linux
-    //In a linux machine, mallocing a stack gives you null head and tail pointers while in windows it initialises
+    //In a linux machine, mallocing a queue gives you null head and tail pointers while in windows it initialises
     //head and tail pointers with some value, thus a->tail-> next gives a segmentation fault
     a->head = NULL;
     a->tail = NULL;
-    a->size = 15;
+    a->size = size;
     a->n = 0;
     srand(time(NULL));
     for (int i = 0; i < size; i++)
@@ -103,8 +111,8 @@ stack *generateStack(int size)
 
 int main()
 {
-    stack *a = generateStack(15);
-    printStack(a);
+    queue *a = generatequeue(15);
+    printqueue(a);
     int k = 0;
     a->size +=1;
     push(a,1001);
