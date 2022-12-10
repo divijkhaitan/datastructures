@@ -28,6 +28,8 @@ node* findpredlevel(skiplist* list,int val,int level);
 
 node* findsucclevel(skiplist* list,int val,int level);
 
+node* findfirstlevel(skiplist*list, int level);
+
 void delete(skiplist* list, int val);
 
 void printlist(skiplist* list);
@@ -37,56 +39,60 @@ int main()
 {
     srand(time(NULL));
     skiplist* list = malloc(sizeof(skiplist));
-    
-    node* temp5 = malloc(sizeof(node));
-    temp5->val = 10;
-    temp5->size = 4;
-    temp5->nextarr = malloc(4*sizeof(node*));
-    temp5->nextarr[0] = NULL;
-    temp5->nextarr[1] = NULL;
-    temp5->nextarr[2] = NULL;
-    temp5->nextarr[3] = NULL;
+    list->maxsize = 5;
+    // node* temp5 = malloc(sizeof(node));
+    // temp5->val = 10;
+    // temp5->size = 4;
+    // temp5->nextarr = malloc(4*sizeof(node*));
+    // temp5->nextarr[0] = NULL;
+    // temp5->nextarr[1] = NULL;
+    // temp5->nextarr[2] = NULL;
+    // temp5->nextarr[3] = NULL;
 
     
-    node*temp4 = malloc(sizeof(node));
-    temp4->val = 4;
-    temp4->size = 1;
-    temp4->nextarr = malloc(4*sizeof(node*));
-    temp4->nextarr[0] = temp5;
-    // temp4->nextarr[1] = NULL;
-    // temp4->nextarr[2] = NULL;
-    // temp4->nextarr[3] = NULL;
+    // node*temp4 = malloc(sizeof(node));
+    // temp4->val = 4;
+    // temp4->size = 1;
+    // temp4->nextarr = malloc(4*sizeof(node*));
+    // temp4->nextarr[0] = temp5;
     
-    node*temp3 = malloc(sizeof(node));
-    temp3->val = 3;
-    temp3->size = 2;
-    temp3->nextarr = malloc(2*sizeof(node*));
-    temp3->nextarr[0] = temp4;
-    temp3->nextarr[1] = temp5;
+    // node*temp3 = malloc(sizeof(node));
+    // temp3->val = 3;
+    // temp3->size = 2;
+    // temp3->nextarr = malloc(2*sizeof(node*));
+    // temp3->nextarr[0] = temp4;
+    // temp3->nextarr[1] = temp5;
     
-    node*temp2 = malloc(sizeof(node));
-    temp2->val = 2;
-    temp2->size = 3;
-    temp2->nextarr = malloc(3*sizeof(node*));
-    temp2->nextarr[0] = temp3;
-    temp2->nextarr[1] = temp3;
-    temp2->nextarr[2] = temp5;
+    // node*temp2 = malloc(sizeof(node));
+    // temp2->val = 2;
+    // temp2->size = 3;
+    // temp2->nextarr = malloc(3*sizeof(node*));
+    // temp2->nextarr[0] = temp3;
+    // temp2->nextarr[1] = temp3;
+    // temp2->nextarr[2] = temp5;
 
-    node*temp1 = malloc(sizeof(node));
-    temp1->val = 1;
-    temp1->size = 4;
-    temp1->nextarr = malloc(4*sizeof(node*));
-    temp1->nextarr[0] = temp2;
-    temp1->nextarr[1] = temp2;
-    temp1->nextarr[2] = temp2;
-    temp1->nextarr[3] = temp5;
+    // node*temp1 = malloc(sizeof(node));
+    // temp1->val = 1;
+    // temp1->size = 4;
+    // temp1->nextarr = malloc(4*sizeof(node*));
+    // temp1->nextarr[0] = temp2;
+    // temp1->nextarr[1] = temp2;
+    // temp1->nextarr[2] = temp2;
+    // temp1->nextarr[3] = temp5;
 
-    list->tail = temp4;
-    list->maxsize = 4;
-    list->head = temp1;
-    printlist(list);
+    // list->tail = temp4;
+    // list->maxsize = 4;
+    // list->head = temp1;
+    // printlist(list);
     insert(list, 5);
-    //insert(list, 11);
+    insert(list, 11);
+    insert(list, 12);
+    insert(list, 0);
+    insert(list, 15);
+    insert(list, 1);
+    insert(list, 20);
+    insert(list, -10);
+    
     printlist(list);
     return 0;
 }
@@ -95,20 +101,20 @@ void insert(skiplist* list, int val)
 {
     node* temp = malloc(sizeof(node));
     temp->val = val;
-    // int n = rand()/9;
     int i =0;
-    // while ((i < (list->maxsize)-1) && (n < 5))
-    // {
-    //     i++;
-    //     n = rand()/9;
-    // }
-    // i++;
-    i = 4;
-    temp->nextarr = malloc(i*sizeof(node*));
+    int n = rand()%9;
+    while ((i < (list->maxsize)-1) && (n < 5))
+    {
+        i++;
+        n = rand()/9;
+    }
+    i++;
+    //i = 4;
+    temp->nextarr = malloc(list->maxsize*sizeof(node*));
     temp->size = i;
     for(int j = 0; j < list->maxsize; j++)
     {
-        temp->nextarr[j] = 0;
+        temp->nextarr[j] = NULL;
     }
     //fixes number of pointers on node
     if(list->head==NULL)
@@ -124,6 +130,11 @@ void insert(skiplist* list, int val)
         for(;i >= 0;i--)
         {
             pred = findpredlevel(list, val, i);
+            if(pred==NULL)
+            {
+                temp->nextarr[i]==NULL;
+                continue;
+            }
             if(pred->val > val)
             {
                 temp->nextarr[i] = pred;
@@ -150,7 +161,7 @@ void printlist(skiplist*list)
 {
     for(int i = list->maxsize-1; i>=0;i--)
     {
-        for(node* temp = list->head; temp!=NULL; temp = temp->nextarr[i])
+        for(node* temp = findfirstlevel(list,i); temp!=NULL; temp = temp->nextarr[i])
         {
             printf("%d\t", temp->val);
         }
@@ -257,22 +268,8 @@ node* searchlevel(skiplist* list, int val, int level)
 
 node* findpredlevel(skiplist* list, int val, int level)
 {
-    if(level >= list->maxsize)
-    {
-        return NULL;
-    }
     int i = level;
-    node* pred = list->head;
-    while(pred)
-    {
-        if (pred->size<level)
-        {
-            pred=pred->nextarr[pred->size-1];
-            continue;
-        }
-        else
-        break;
-    }
+    node* pred = findfirstlevel(list,level);
     if(pred->val >= val)
     {
         return pred;
@@ -281,6 +278,10 @@ node* findpredlevel(skiplist* list, int val, int level)
     {
         if(pred->val < val)
         {
+            if(pred->nextarr[level]==NULL)
+            {
+                return pred;
+            }
             if(pred->nextarr[level]->val>val)
             {
                 return pred;
@@ -292,4 +293,31 @@ node* findpredlevel(skiplist* list, int val, int level)
         }
     }
     return NULL;
+}
+
+node* findfirstlevel(skiplist*list, int level)
+{
+    if(level >= list->maxsize)
+    {
+        return NULL;
+    }
+    node* first = list->head;
+    while(first)
+    {
+        if (first->size<level)
+        {
+            first=first->nextarr[first->size-1];
+            continue;
+        }
+        else
+        break;
+    }
+    if(first==NULL)
+    return NULL;
+    if(first->size<level)
+    {
+        return NULL;
+    }
+    
+    return first;
 }
