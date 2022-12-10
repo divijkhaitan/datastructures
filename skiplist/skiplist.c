@@ -92,7 +92,12 @@ int main()
     insert(list, 1);
     insert(list, 20);
     insert(list, -10);
-    
+    printlist(list);
+    printf("\n");
+    delete(list, -10);
+    printlist(list);
+    delete(list, 0);
+    delete(list,12);
     printlist(list);
     return 0;
 }
@@ -282,7 +287,7 @@ node* findpredlevel(skiplist* list, int val, int level)
             {
                 return pred;
             }
-            if(pred->nextarr[level]->val>val)
+            if(pred->nextarr[level]->val>=val)
             {
                 return pred;
             }
@@ -320,4 +325,30 @@ node* findfirstlevel(skiplist*list, int level)
     }
     
     return first;
+}
+
+void delete(skiplist* list, int val)
+{
+    node* temp = searchnew(list, val);
+    node* pred = NULL;
+    if(temp==NULL)
+    {
+        printf("Element must exist to be deleted");
+        return;
+    }
+    for(int i = temp->size-1;i>=0;i--)
+    {
+        pred=findpredlevel(list,val,i);
+        pred->nextarr[i] = temp->nextarr[i];
+    }
+    if(temp==list->head)
+    {
+        list->head = temp->nextarr[0];
+    }
+    if(temp==list->tail)
+    {
+        list->tail = findpredlevel(list,val,0);
+    }
+    
+    free(temp);
 }
