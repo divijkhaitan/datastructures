@@ -1,45 +1,15 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include <time.h>
-
-typedef struct node
-{
-    int val;
-    struct node* left;
-    struct node* right;
-    struct node* parent;
-    int height;
-}node;
-
-typedef struct tree
-{
-    node* root;
-}tree;
-void insert(tree*a, int b);
-tree* maketree(int*a, int n);
-void printarray(int* a, int size);
-int* generateArray(int size);
-void printinorder(node* a);
-node* search(tree*a, int n);
-node* inorder_successor(node*a);
-node* inorder_predeccessor(node* a);
-node* maxchild(node* a);
-node* minchild(node* a);
-void delete(tree* a,node* b);
-int updateheight(node* a);
-int getheight(node* a);
-node* leftrotate(tree *a, node* b);
-node* rightrotate(tree *a, node* b);
-void balance(tree* a, node* b);
-
+#include "trees.h"
 int main()
 {
     srand(time(NULL));
     int size = 10;
     // printf("Enter number of values in tree: ");
     // scanf("%d", &size);
-    //int arr[3]= {1,3,2};
-    int* arr = generateArray(size);
+    //double arr[10]= {1040813.949000, 447398.685000, 1721528.225000, 2117169.604000, 1698151.717000, 1847392.342000, 1632279.278000, 1427539.101000, 1013786.566000, 928263.239000};
+    double* arr = generateArray(size);
     printarray(arr,size);
     //tree* a = malloc(sizeof(tree));
     //a->root = NULL;
@@ -50,17 +20,17 @@ int main()
     //     insert(a,t);
     // }
     tree* a= maketree(arr,size);
-    printinorder(a->root);
+    //printinorder(a->root);
     printf("\n");
     //node* temp =search(a, arr[rand()%size]);
     //printf("%d\n",temp->val);
-    delete(a, a->root);
+    del(a, a->root);
     //rightrotate(a,a->root);
     printinorder(a->root);
     return 0;
 }
 
-void insert(tree* a, int b)
+void insert(tree* a, double b)
 {
     int h = 0;
     node* temp = a->root;
@@ -143,32 +113,39 @@ void insert(tree* a, int b)
     }
 }
 
-tree* maketree(int* a, int n)
+tree* maketree(double* a, int n)
 {
     tree* bst = (tree*)malloc(sizeof(tree));
     bst->root = NULL;
     for(int i = 0; i < n; i++)
     {
+        // if(bst->root)
+        // {
+        //     printf("Root = %lf\n",bst->root->val);
+        // }
+        // printf("Inserting = %lf\n",a[i]);
         insert(bst,a[i]);
+        // printinorder(bst->root);
+        // printf("\n");
     }
     return bst;
 }
-void printarray(int *a, int size)
+void printarray(double *a, int size)
 {
     int i;
     for (i = 0; i < size - 1; i++)
     {
-        printf("%d, ", a[i]);
+        printf("%lf, ", a[i]);
     }
-    printf("%d\n", a[i]);
+    printf("%lf\n", a[i]);
 }
 
-int* generateArray(int size)
+double* generateArray(int size)
 {
-    int *a = (int *)malloc(sizeof(int)*size);
+    double *a = malloc(sizeof(double)*size);
     for (int i = 0; i < size; i++)
     {
-        a[i]= (rand() % 1000);
+        a[i]= ((double)rand() / 1000.0);
     }
     return a;
 }
@@ -179,7 +156,7 @@ void printinorder(node* a)
     {
         printinorder(a->left);
     }
-    printf("%d\t", a->val);
+    printf("%lf\t", a->val);
     printf("%d\n", a->height);
     if(a->right)
     {
@@ -262,7 +239,7 @@ node* minchild(node* a)
     return a;
 }
 
-void delete(tree* a,node* b)
+void del(tree* a,node* b)
 {
     int h;
     if(b==NULL)
@@ -385,7 +362,7 @@ void delete(tree* a,node* b)
         //     succ2=succ2->parent;
         // }
         balance(a,succ);
-        delete(a,succ);
+        del(a,succ);
     }
 }
 
@@ -414,7 +391,7 @@ int getheight(node* a)
     }
 }
 
-node* search(tree*a, int n)
+node* search(tree*a, double n)
 {
     node* temp = a->root;
     while(temp)
@@ -456,9 +433,10 @@ node* leftrotate(tree *a, node* b)
         b->parent->left = rc;
     }
     b->parent = rc;
-    b->height = getheight(b);
-    int branchheight = getheight((rc->right));
-    rc->height = (b->height>branchheight)?b->height+1:branchheight+1;
+    // b->height = getheight(b);
+    // int branchheight = getheight((rc->right));
+    // rc->height = (b->height>branchheight)?b->height+1:branchheight+1;
+    updateheight(b);
     if(b==a->root)
     {
         a->root = rc;
@@ -487,9 +465,10 @@ node* rightrotate(tree *a, node* b)
         b->parent->left = lc;
     }
     b->parent = lc;
-    b->height = getheight(b);
-    int branchheight = getheight((lc->left));
-    lc->height = (b->height>branchheight)?b->height+1:branchheight+1;
+    updateheight(b);
+    // b->height = getheight(b);
+    // int branchheight = getheight((lc->left));
+    // lc->height = (b->height>branchheight)?b->height+1:branchheight+1;
     if(b==a->root)
     {
         a->root = lc;
@@ -526,7 +505,7 @@ void balance(tree* a, node* b)
     {
         childleft = (b->right->left)?b->right->left->height:0;
         childright = (b->right->right)?b->right->right->height:0;
-        if(childleft>=childright)
+        if(childleft<childright)
         {
             leftrotate(a,b);
             balance(a,b->parent);

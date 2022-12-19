@@ -5,7 +5,19 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/usr/include/c++/11",
-                "/usr/include/x86_64-linux-gnu/c++/11"
+                "/usr/include/x86_64-linux-gnu/c++/11",
+                "${workspaceFolder}/consistent-hash"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        },
+        {
+            "name": "Default",
+            "includePath": [
+                "${workspaceFolder}/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
