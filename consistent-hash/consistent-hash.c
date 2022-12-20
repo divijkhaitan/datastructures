@@ -3,6 +3,7 @@
 #include<time.h>
 #include<limits.h>
 
+
 double hash(char* str, int * list);
 
 int main()

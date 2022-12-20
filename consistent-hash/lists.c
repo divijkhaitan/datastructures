@@ -3,19 +3,31 @@
 #include<time.h>
 #include<string.h>
 #include "lists.h"
-
-void main()
+#include <limits.h>
+double hash(char* str, int* list);
+void printLL(ll *list);
+int main()
 {
+    char*arr[10]= {"The","One", "Piece", "tHE", "OnE", "PiEcE", "is", "rEal"};
+    int hashvalues[] = {92, 162};
+    ll* list = malloc(sizeof(ll));
+    list->head = NULL;
+    list->tail = NULL;
+    for(int i = 0; i < 9; i++)
+    {
+        add(list, arr[i], hashvalues);
+        printLL(list);
+    }
     return 0;
 }
 
-void add(ll* list, char* id)
+void add(ll* list, char* id, int* hashvalues)
 {
     llnode* temp = malloc(sizeof(llnode));
     temp->id = malloc(strlen(id)*sizeof(char));
     temp->id = id;
     temp->next =NULL;
-    //temp->val = hash(id);
+    temp->val = hash(id, hashvalues);
     if(list->head == NULL)
     {
         list->head = temp;
@@ -42,7 +54,9 @@ void add(ll* list, char* id)
         {
             temp->next = current->next;
             current->next = temp;
+            break;
         }
+        current = current->next;
     }
     
 }
@@ -56,7 +70,7 @@ void concatll(ll* list1, ll* list2)
     list1->tail->next = list2->head;
 }
 
-void remove(ll*list, double val)
+void removeFromLL(ll*list, double val)
 {
     llnode* temp = list->head;
     if(temp->val == val)
@@ -112,7 +126,7 @@ ll* getllFromFront(ll* list, double val)
     return new;
 }
 
-llnode* search(ll*list, double val)
+llnode* searchll(ll*list, double val)
 {
     if(list->head == NULL)
     {
@@ -125,4 +139,34 @@ llnode* search(ll*list, double val)
         break;
     }
     return temp;
+}
+
+double hash(char* str, int * hashvalues)
+{
+    unsigned long long int val= 0;
+    for(int i = 0; str[i]!=0; i++)
+    {
+        val+= str[i]*hashvalues[0];
+        val*= str[i]*hashvalues[1];
+    }
+    double degrees = ((double)val/(double)ULLONG_MAX) *360;
+    return degrees;
+}
+
+void printLL(ll *list)
+{
+    if (!(list->head))
+    {
+        printf("Empty List\n");
+        return;
+    }
+    llnode *temp = list->head;
+    while (temp->next)
+    {
+        printf("%lf %s, ", temp->val, temp->id);
+        temp = temp->next;
+    }
+    printf("%lf %s", temp->val, temp->id);
+    printf("\n");
+    return;
 }

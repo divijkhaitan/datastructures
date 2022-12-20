@@ -23,7 +23,10 @@ typedef struct node
 typedef struct tree
 {
     node* root;
+    int* ahash;
+    int* khash;
 }tree;
+void inskey(tree*a, char* str);
 void insert(tree*a, double b);
 tree* maketree(double*a, int n);
 void printarray(double* a, int size);

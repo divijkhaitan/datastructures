@@ -11,12 +11,12 @@ typedef struct ll{
 }ll;
 
 
-void add(ll* list, char* id);
+void add(ll* list, char* id, int* hashvalues);
 
 void concat(ll* list1, ll* list2);
 
-void remove(ll* list, double val);
+void removeFromLL(ll* list, double val);
 
 ll* getllFromFront(ll* list, double val);
 
-llnode* search(ll*list, double val);
+llnode* searchll(ll*list, double val);

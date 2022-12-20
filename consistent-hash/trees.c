@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include <time.h>
 #include "trees.h"
+#include "lists.h"
 int main()
 {
     srand(time(NULL));
@@ -38,6 +39,9 @@ void insert(tree* a, double b)
     node*temp3=NULL;
     temp2->height = 0;
     temp2->val = b;
+    temp2->keys = malloc(sizeof(ll));
+    temp2->keys->head = NULL;
+    temp2->keys->tail = NULL;
     temp2->right = NULL;
     temp2->parent = NULL;
     temp2->left = NULL;
@@ -58,24 +62,6 @@ void insert(tree* a, double b)
             temp-> left = temp2;
             temp2->parent = temp;
             updateheight(temp2);
-            // temp2->height = getheight(temp2);
-            // temp3 = temp2;
-            // while (temp2->parent)
-            // {
-            //     if(temp2->parent->left==temp2)
-            //     {
-            //         h = (temp2->parent->right)?temp2->parent->right->height : 0;
-            //     }
-            //     if(temp2->parent->right==temp2)
-            //     {
-            //         h = (temp2->parent->left)?temp2->parent->left->height : 0;
-            //     }
-            //     if(h<=temp2->height)
-            //     {
-            //         temp2->parent->height = temp2->height+1;
-            //     }
-            //     temp2=temp2->parent;
-            // }
             balance(a, temp2);
             break;
         }
@@ -89,24 +75,6 @@ void insert(tree* a, double b)
             temp-> right = temp2;
             temp2->parent = temp;
             updateheight(temp2);
-            // temp2->height = getheight(temp2);
-            // temp3 = temp2;
-            // while (temp2->parent)
-            // {
-            //     if(temp2->parent->left==temp2)
-            //     {
-            //         h = (temp2->parent->right)?temp2->parent->right->height : 0;
-            //     }
-            //     if(temp2->parent->right==temp2)
-            //     {
-            //         h = (temp2->parent->left)?temp2->parent->left->height : 0;
-            //     }
-            //     if(h<=temp2->height)
-            //     {
-            //         temp2->parent->height = temp2->height+1;
-            //     }
-            //     temp2=temp2->parent;
-            // }
             balance(a,temp2);
             break;
         }
@@ -117,6 +85,12 @@ tree* maketree(double* a, int n)
 {
     tree* bst = (tree*)malloc(sizeof(tree));
     bst->root = NULL;
+    bst->ahash = malloc(sizeof(int)*2);
+    bst->ahash[0] = rand()%1000;
+    bst->ahash[1] = rand()%1000;
+    bst->khash = malloc(sizeof(int)*2);
+    bst->khash[0] = rand()%1000;
+    bst->khash[1] = rand()%1000;
     for(int i = 0; i < n; i++)
     {
         // if(bst->root)
@@ -130,6 +104,7 @@ tree* maketree(double* a, int n)
     }
     return bst;
 }
+
 void printarray(double *a, int size)
 {
     int i;
@@ -183,6 +158,10 @@ node* inorder_successor(node*a)
             a = a->parent;
         }
     }
+    while (a)
+    {
+        a = a->left;
+    }
     return a;
 }
 
@@ -204,7 +183,11 @@ node* inorder_predeccessor(node* a)
             a = a->parent;
         }
     }
-    return NULL;
+    while (a)
+    {
+        a = a->right;
+    }
+    return a;
 }
 
 node* maxchild(node* a)
@@ -522,4 +505,59 @@ void balance(tree* a, node* b)
         balance(a,b->parent);
     }
 
+}
+
+void inskey(tree*a, char* str)
+{
+    double val;
+    //val = hash(str)
+    node* temp = a->root;
+    while (temp)
+    {
+        if(temp->left==NULL && temp->right==NULL && temp->val < val)
+        {
+            add(inorder_successor(temp)->keys, str);
+            return;
+        }
+        
+        if((temp->val >=val) && (temp->left == NULL || temp->left->val < val))
+        {
+            add(temp->keys, str);
+            return;
+        }
+        
+        if(temp->val<val)
+        {
+            temp = temp->right;
+            continue;
+        }
+
+        if(temp->val>=val)
+        {
+            temp = temp->left;
+            continue;
+        }
+    }
+}
+
+void reassignKeysAdd(tree*a, node* new)
+{
+    node* succ = inorder_successor(new);
+    if(new->val > succ->val)
+    {
+        
+    }
+    if(new->val > succ->keys->tail->val)
+    {
+        new->keys->head = succ->keys->head;
+        succ->keys->head = NULL;
+        new->keys->tail = succ->keys->tail;
+        succ->keys->tail = NULL;
+        return;
+    }
+    if(new->val < succ->keys->head->val)
+    {
+        return;
+    }
+    
 }
