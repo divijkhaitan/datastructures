@@ -9,7 +9,7 @@ void printLL(ll *list);
 int main()
 {
     char*arr[10]= {"The","One", "Piece", "tHE", "OnE", "PiEcE", "is", "rEal"};
-    int hashvalues[] = {92, 162};
+    int hashvalues[] = {367, 468};
     ll* list = malloc(sizeof(ll));
     list->head = NULL;
     list->tail = NULL;
@@ -41,6 +41,7 @@ void add(ll* list, char* id, int* hashvalues)
         list->head = temp;
         return;
     }
+    
     if(temp->val>list->tail->val)
     {
         list->tail->next = temp;
@@ -83,16 +84,16 @@ void removeFromLL(ll*list, double val)
     {
         if(temp->next->val == val)
         {
-            llnode* temp2 = temp->next;
-            temp->next = temp2->next;
-            if(temp2 == list->tail)
-            {
-                list->tail = temp;
-            }
-            free(temp2);
+            break;
         }
     }
-    
+    llnode* temp2 = temp->next;
+    temp->next = temp2->next;
+    if(temp2 == list->tail)
+    {
+        list->tail = temp;
+    }
+    free(temp2);
 }
 
 ll* getllFromFront(ll* list, double val)
@@ -169,4 +170,15 @@ void printLL(ll *list)
     printf("%lf %s", temp->val, temp->id);
     printf("\n");
     return;
+}
+
+llnode* pop(ll* list)
+{
+    if(list->tail == NULL)
+    {
+        return;
+    }
+    llnode* temp = list->tail;
+    removeFromLL(list, temp->val);
+    return temp;
 }

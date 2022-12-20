@@ -25,8 +25,9 @@ typedef struct tree
     node* root;
     int* ahash;
     int* khash;
+    double min;
+    double max;
 }tree;
-void inskey(tree*a, char* str);
 void insert(tree*a, double b);
 tree* maketree(double*a, int n);
 void printarray(double* a, int size);
@@ -43,3 +44,8 @@ int getheight(node* a);
 node* leftrotate(tree *a, node* b);
 node* rightrotate(tree *a, node* b);
 void balance(tree* a, node* b);
+//test all these functions
+void delkey(tree*a, char* str);
+void inskey(tree*a, char* str);
+void reassignKeysAdd(tree*a, node* new);
+void reassignKeysDel(tree*a, node* deleting);

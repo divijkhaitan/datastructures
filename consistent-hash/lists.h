@@ -15,6 +15,8 @@ void add(ll* list, char* id, int* hashvalues);
 
 void concat(ll* list1, ll* list2);
 
+llnode* pop(ll* list);
+
 void removeFromLL(ll* list, double val);
 
 ll* getllFromFront(ll* list, double val);
