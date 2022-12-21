@@ -230,7 +230,7 @@ void del(tree* a,node* b)
             free(temp->id);
             free(temp);
             temp = curr;
-            }
+        }
         free(b->keys);
         //free(b->id);
         free(b);
@@ -238,6 +238,15 @@ void del(tree* a,node* b)
     }
     if(b->left==NULL && b->right==NULL)
     {
+        if(b==a->max)
+        {
+            a->max = b->parent;
+        }
+        if(b==a->max)
+        {
+            a->min = b->parent;
+        }
+        reassignKeysDel(a,b);
         if(b->parent->right == b)
         {
             b->parent->right = NULL;
@@ -250,7 +259,6 @@ void del(tree* a,node* b)
         node* b1 = b;
         b = b->parent;
         balance(a,b1);
-        reassignKeysDel(a,b1);
         //free(b1->id);
         free(b1);
         return;
@@ -262,8 +270,12 @@ void del(tree* a,node* b)
             reassignKeysDel(a,b);
             b->val = b->left->val;
             b->id = b->left->id;
-            b->keys->head = b->left->keys->head;
-            b->keys->tail = b->left->keys->tail;
+            
+            if(b->keys && b->left->keys && b->left->keys->head)
+            {   
+                b->keys->head = b->left->keys->head;
+                b->keys->tail = b->left->keys->tail;
+            }
             free(b->left->keys);
             //free(b->left->id);
             free(b->left);
@@ -278,8 +290,11 @@ void del(tree* a,node* b)
             reassignKeysDel(a,b);
             b->val = b->right->val;
             b->id = b->right->id;
-            b->keys->head = b->right->keys->head;
-            b->keys->tail = b->right->keys->tail;
+            if(b->keys && b->right->keys && b->right->keys->head)
+            {   
+                b->keys->head = b->right->keys->head;
+                b->keys->tail = b->right->keys->tail;
+            }
             free(b->right->keys);
             //free(b->right->id);
             free(b->right);
@@ -295,10 +310,14 @@ void del(tree* a,node* b)
         node* succ = inorder_successor(a,b);
         reassignKeysDel(a,b);
         b->val = succ->val;
-        b->keys->head = succ->keys->head;
-        b->keys->tail = succ->keys->tail;
-        succ->keys->head=NULL;
-        succ->keys->tail=NULL;
+        b->id = succ->id;
+        if(b->keys && succ->keys && succ->keys->head)
+        {
+            b->keys->head = succ->keys->head;
+            b->keys->tail = succ->keys->tail;
+            succ->keys->head=NULL;
+            succ->keys->tail=NULL;
+        }
         //free(succ->id);
         free(succ->keys);
         succ->keys = NULL;
@@ -549,6 +568,8 @@ void delkey(tree*a, char* str)
 void reassignKeysAdd(tree*a, node* new)
 {
     node* succ = inorder_successor(a,new);
+    llnode* temp;
+    llnode* next;
     if(succ==NULL)
     {
         succ = a->min;
@@ -557,8 +578,7 @@ void reassignKeysAdd(tree*a, node* new)
     {
         return;
     }
-    
-    if(new->val > succ->val)
+    if(new->val > succ->val || new == a->min)
     {
         llnode* temp = succ->keys->head;
         llnode* next;
@@ -602,7 +622,7 @@ void reassignKeysAdd(tree*a, node* new)
     //common case: the new anchor has the head of the old anchor. Traverse the list until you find the tail and assign the next node as the head
     //of the new anchor 
     new->keys->head = succ->keys->head;
-    llnode* temp = succ->keys->head;
+    temp = succ->keys->head;
     while (temp->val < new->val)
     {
         new->keys->tail = temp;
@@ -628,7 +648,14 @@ void reassignKeysDel(tree*a, node* deleting)
         return;
     }
     node* succ = inorder_successor(a,deleting);
-    
+    if(succ->keys == NULL)
+    {
+        return;
+    }
+    if(succ->keys->head == NULL)
+    {
+        return;
+    }
     if(succ->val<deleting->val)
     {
         for(llnode* temp = deleting->keys->head; temp; temp = temp->next)

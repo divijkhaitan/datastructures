@@ -159,6 +159,10 @@ double hash(char* str, int * hashvalues)
 
 void printLL(ll *list)
 {
+    if(list==NULL)
+    {
+        return;
+    }
     if (!(list->head))
     {
         printf("Empty List\n");
