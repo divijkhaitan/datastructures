@@ -2,8 +2,8 @@
 #include<stdlib.h>
 #include<time.h>
 #include<string.h>
+#include<limits.h>
 #include "lists.h"
-#include <limits.h>
 // int main()
 // {
 //     char*arr[10]= {"The","One", "Piece", "tHE", "OnE", "PiEcE", "is", "rEal"};
@@ -22,8 +22,11 @@
 void add(ll* list, char* id, int* hashvalues)
 {
     llnode* temp = malloc(sizeof(llnode));
-    temp->id = (char*)malloc((strlen(id)+2)*sizeof(char));
-    temp->id = id;
+    temp->id = malloc((strlen(id)+1)*sizeof(char));
+    for(int i = 0; i < strlen(id); i++)
+    {
+        temp->id[i] = id[i];
+    }
     temp->next =NULL;
     temp->val = hash(id, hashvalues);
     if(list->head == NULL)
@@ -85,6 +88,7 @@ void removeFromLL(ll*list, double val)
         {
             break;
         }
+        temp = temp->next;
     }
     llnode* temp2 = temp->next;
     temp->next = temp2->next;

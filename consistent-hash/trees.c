@@ -1,56 +1,45 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include <time.h>
+#include<time.h>
+#include<string.h>
+#include<limits.h>
 #include "trees.h"
 #include "lists.h"
 // int main()
 // {
 //     srand(time(NULL));
-//     int size = 10;
-//     //double arr[10]= {1040813.949000, 447398.685000, 1721528.225000, 2117169.604000, 1698151.717000, 1847392.342000, 1632279.278000, 1427539.101000, 1013786.566000, 928263.239000};
-//     double* arr = generateArray(size);
-//     printarray(arr,size);
-//     tree* a= maketree(arr,size);
-//     //printinorder(a->root);
+//     char*arr[] = {"hjk857sfdg98", "qwertyuiopasdfghjklzxcvbnm", "abcdefghijklmnopqrstuvwxyz1234567890"};
+//     char* kees[] = {"Jessica", "Michael", "Jennifer", "Christopher", "Amanda", "Matthew", "Sarah", "David", "Emily", "James"};
+//     tree* bst = malloc(sizeof(tree));
+//     bst->ahash = malloc(sizeof(int)*2);
+//     bst->khash = malloc(sizeof(int)*2);
+//     bst->ahash[0] = rand()%1000+1;
+//     bst->khash[0] = rand()%1000+1;
+//     bst->ahash[1] = rand()%1000+1;
+//     bst->khash[1] = rand()%1000+1;
+//     printf("%d %d Ahash\n", bst->ahash[0], bst->ahash[1]);
+//     printf("%d %d Ahash\n", bst->khash[0], bst->khash[1]);
+//     insert(bst,arr[0]);
+//     insert(bst,arr[1]);
+//     insert(bst,arr[2]);
+//     for(int i = 0; i < 10; i++)
+//     {
+//         printf("Inserting %s %lf\n", kees[i], hash(kees[i],bst->khash));
+//         inskey(bst, kees[i]);
+//         printinorder(bst->root);
+//         printf("\n");
+//     }
+//     insert(bst, "TESTSERVER");
+//     printinorder(bst->root);
+//     del(bst, search(bst, hash(arr[0],bst->ahash)));
 //     printf("\n");
-//     del(a, a->root);
-//     printinorder(a->root);
+//     printinorder(bst->root);
 //     return 0;
 // }
-int main()
+
+void insert(tree* a, char* id)
 {
-    srand(time(NULL));
-    char*arr[] = {"hjk857sfdg98", "qwertyuiopasdfghjklzxcvbnm", "abcdefghijklmnopqrstuvwxyz1234567890"};
-    char* kees[] = {"Jessica", "Michael", "Jennifer", "Christopher", "Amanda", "Matthew", "Sarah", "David", "Emily", "James"};
-    tree* bst = malloc(sizeof(tree));
-    bst->ahash = malloc(sizeof(int)*2);
-    bst->khash = malloc(sizeof(int)*2);
-    bst->ahash[0] = rand()%1000+1;
-    bst->khash[0] = rand()%1000+1;
-    bst->ahash[1] = rand()%1000+1;
-    bst->khash[1] = rand()%1000+1;
-    printf("%d %d Ahash\n", bst->ahash[0], bst->ahash[1]);
-    printf("%d %d Ahash\n", bst->khash[0], bst->khash[1]);
-    insert(bst,hash(arr[0],bst->ahash));
-    insert(bst,hash(arr[1],bst->ahash));
-    insert(bst,hash(arr[2],bst->ahash));
-    for(int i = 0; i < 10; i++)
-    {
-        printf("Inserting %s %lf\n", kees[i], hash(kees[i],bst->khash));
-        inskey(bst, kees[i]);
-        printinorder(bst->root);
-        printf("\n");
-    }
-    insert(bst, hash("TESTSERVER",bst->khash));
-    printinorder(bst->root);
-    del(bst, search(bst, hash(arr[0],bst->ahash)));
-    printf("\n");
-    printinorder(bst->root);
-    return 0;
-}
-//test with keys
-void insert(tree* a, double b)
-{
+    double b = hash(id, a->ahash);
     int h = 0;
     node* temp = a->root;
     node* temp2 = (node*)malloc(sizeof(node));
@@ -64,6 +53,11 @@ void insert(tree* a, double b)
     temp2->right = NULL;
     temp2->parent = NULL;
     temp2->left = NULL;
+    temp2->id = malloc((strlen(id)+1)*sizeof(char));
+    for(int i = 0; i < strlen(id); i++)
+    {
+        temp2->id[i] = id[i];
+    }
     if(temp == NULL)
     {
         a->root = temp2;
@@ -112,50 +106,6 @@ void insert(tree* a, double b)
     }
 }
 
-tree* maketree(double* a, int n)
-{
-    tree* bst = (tree*)malloc(sizeof(tree));
-    bst->root = NULL;
-    bst->ahash = malloc(sizeof(int)*2);
-    bst->ahash[0] = rand()%1000;
-    bst->ahash[1] = rand()%1000;
-    bst->khash = malloc(sizeof(int)*2);
-    bst->khash[0] = rand()%1000;
-    bst->khash[1] = rand()%1000;
-    for(int i = 0; i < n; i++)
-    {
-        // if(bst->root)
-        // {
-        //     printf("Root = %lf\n",bst->root->val);
-        // }
-        // printf("Inserting = %lf\n",a[i]);
-        insert(bst,a[i]);
-        // printinorder(bst->root);
-        // printf("\n");
-    }
-    return bst;
-}
-
-void printarray(double *a, int size)
-{
-    int i;
-    for (i = 0; i < size - 1; i++)
-    {
-        printf("%lf, ", a[i]);
-    }
-    printf("%lf\n", a[i]);
-}
-
-double* generateArray(int size)
-{
-    double *a = malloc(sizeof(double)*size);
-    for (int i = 0; i < size; i++)
-    {
-        a[i]= ((double)rand() / 1000.0);
-    }
-    return a;
-}
-
 void printinorder(node* a)
 {
     if(a == NULL)
@@ -166,8 +116,10 @@ void printinorder(node* a)
     {
         printinorder(a->left);
     }
+    printf("%s\t",a->id);
     printf("%lf\t", a->val);
-    printf("%d\t", a->height);
+    //printf("%d\t", a->height);
+    printf("\n");
     printLL(a->keys);
     if(a->right)
     {
@@ -257,7 +209,7 @@ node* minchild(node* a)
     }
     return a;
 }
-//test with keys
+
 void del(tree* a,node* b)
 {
     int h;
@@ -271,14 +223,16 @@ void del(tree* a,node* b)
         a->min = NULL;
         a->max = NULL;
         llnode* temp = b->keys->head;
-        llnode* curr = temp->next;
+        llnode* curr;
         while(temp)
         {
+            curr = temp->next;
+            free(temp->id);
             free(temp);
             temp = curr;
-            curr = curr->next;
-        }
+            }
         free(b->keys);
+        //free(b->id);
         free(b);
         return;
     }
@@ -297,7 +251,9 @@ void del(tree* a,node* b)
         b = b->parent;
         balance(a,b1);
         reassignKeysDel(a,b1);
+        //free(b1->id);
         free(b1);
+        return;
     }
     else if ( (b->left==NULL) ^ (b->right==NULL))
     {
@@ -305,23 +261,33 @@ void del(tree* a,node* b)
         {
             reassignKeysDel(a,b);
             b->val = b->left->val;
-            b->keys = b->left->keys;
+            b->id = b->left->id;
+            b->keys->head = b->left->keys->head;
+            b->keys->tail = b->left->keys->tail;
+            free(b->left->keys);
+            //free(b->left->id);
             free(b->left);
             b->left = NULL;
             node* b1 = b;
             updateheight(b);
             balance(a,b1);
+            return;
         }
         else if(b->right)
         {
             reassignKeysDel(a,b);
             b->val = b->right->val;
-            b->keys = b->right->keys;
+            b->id = b->right->id;
+            b->keys->head = b->right->keys->head;
+            b->keys->tail = b->right->keys->tail;
+            free(b->right->keys);
+            //free(b->right->id);
             free(b->right);
             b->right = NULL;
             node* b1 = b;
             updateheight(b);
             balance(a,b1);
+            return;
         }
     }
     else
@@ -329,15 +295,21 @@ void del(tree* a,node* b)
         node* succ = inorder_successor(a,b);
         reassignKeysDel(a,b);
         b->val = succ->val;
-        b->keys = succ->keys;
-        if(succ->parent->right == succ)
-        {
-            succ->parent->right = NULL;
-        }
-        else if(succ->parent->left == succ)
-        {
-            succ->parent->left = NULL;
-        }
+        b->keys->head = succ->keys->head;
+        b->keys->tail = succ->keys->tail;
+        succ->keys->head=NULL;
+        succ->keys->tail=NULL;
+        //free(succ->id);
+        free(succ->keys);
+        succ->keys = NULL;
+        // if(succ->parent->right == succ)
+        // {
+        //     succ->parent->right = NULL;
+        // }
+        // else if(succ->parent->left == succ)
+        // {
+        //     succ->parent->left = NULL;
+        // }
         node* succ2 = succ->parent;
         updateheight(succ2);
         balance(a,succ);
@@ -502,7 +474,7 @@ void balance(tree* a, node* b)
     }
 
 }
-//test
+
 void inskey(tree*a, char* str)
 {
     if(a->root == NULL)
@@ -540,7 +512,6 @@ void inskey(tree*a, char* str)
     }
     add(succ->keys, str, a->khash);
 }
-//test
 
 void delkey(tree*a, char* str)
 {
@@ -589,31 +560,29 @@ void reassignKeysAdd(tree*a, node* new)
     
     if(new->val > succ->val)
     {
-        // new->keys->head = succ->keys->head;
-        // succ->keys->head = NULL;
-        //new->keys->tail = succ->keys->tail;
-        //succ->keys->tail = NULL;
-        llnode* temp = succ->keys->head;    //temp points to the head of the successor. We need to move the tail of the successor node to
-        while(temp->val < succ->val)        //key before the successor on the ring, and map the rest of the nodes to the new node
+        llnode* temp = succ->keys->head;
+        llnode* next;
+        char *str;
+        while(temp)
         {
-            succ->keys->tail = temp;
-            temp = temp->next;
+            if(temp->val < succ->val)
+            {
+                temp = temp->next;
+                continue;
+            }
+            if(temp->val > new->val)
+            {
+                temp = temp->next;
+                continue;
+            }
+            if(temp->val < new->val)
+            {
+                next = temp->next;
+                add(new->keys,temp->id,a->khash);
+                removeFromLL(succ->keys, temp->val);
+                temp = next;
+            }
         }
-        new->keys->head = temp;
-        llnode* temp2;
-        while(temp && temp->val < new->val)         //need to adjust for edge case where there are keys greater than the anchor, so we move the tail pointer to
-        {                                   //the last key less than the new anchor and terminate the list
-            temp2 = temp;                   //point of termination of list when loop ends
-            temp = temp->next;              //key after point of termination, which must be mapped back to the successor
-        }
-        new->keys->tail = temp2;            
-        new->keys->tail->next = NULL;       //terminate list
-        succ->keys->tail->next = temp;      //append to back of successors node list
-        while(temp->next)                   //update tail pointer
-        {
-            temp = temp->next;
-        }
-        succ->keys->tail = temp;
         return;
     }
     
@@ -643,21 +612,30 @@ void reassignKeysAdd(tree*a, node* new)
     new->keys->tail->next = NULL;
     return;
 }
-//test
+
 void reassignKeysDel(tree*a, node* deleting)
 {
-    node* succ = inorder_successor(a,deleting);
-    if(succ->val<deleting->val)
+    if(deleting==NULL)
     {
-        for(llnode* temp = deleting->keys->head; temp; temp->next)
-        {
-            add(succ->keys, temp->id, a->khash);
-            removeFromLL(deleting->keys, temp->val);
-        }
+        return;
+    }
+    if(deleting->keys==NULL)
+    {
         return;
     }
     if(deleting->keys->head==NULL)
     {
+        return;
+    }
+    node* succ = inorder_successor(a,deleting);
+    
+    if(succ->val<deleting->val)
+    {
+        for(llnode* temp = deleting->keys->head; temp; temp = temp->next)
+        {
+            add(succ->keys, temp->id, a->khash);
+            removeFromLL(deleting->keys, temp->val);
+        }
         return;
     }
     deleting->keys->tail->next = succ->keys->head;
