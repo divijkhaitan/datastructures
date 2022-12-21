@@ -1,15 +1,15 @@
-typedef struct llnode
-{
-    char* id;
-    double val;
-    struct llnode* next;
-}llnode;
+// typedef struct llnode
+// {
+//     char* id;
+//     double val;
+//     struct llnode* next;
+// }llnode;
 
-typedef struct ll{
-    llnode* head;
-    llnode* tail;
-}ll;
-
+// typedef struct ll{
+//     llnode* head;
+//     llnode* tail;
+// }ll;
+#include "lists.h"
 typedef struct node
 {
     double val;
@@ -25,8 +25,8 @@ typedef struct tree
     node* root;
     int* ahash;
     int* khash;
-    double min;
-    double max;
+    node* min;
+    node* max;
 }tree;
 void insert(tree*a, double b);
 tree* maketree(double*a, int n);
@@ -34,7 +34,7 @@ void printarray(double* a, int size);
 double* generateArray(int size);
 void printinorder(node* a);
 node* search(tree*a, double n);
-node* inorder_successor(node*a);
+node* inorder_successor(tree* bst, node*a);
 node* inorder_predeccessor(node* a);
 node* maxchild(node* a);
 node* minchild(node* a);

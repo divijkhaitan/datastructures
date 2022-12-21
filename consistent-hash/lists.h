@@ -1,3 +1,5 @@
+#ifndef LISTS_H
+#define LISTS_H
 typedef struct llnode
 {
     char* id;
@@ -22,3 +24,9 @@ void removeFromLL(ll* list, double val);
 ll* getllFromFront(ll* list, double val);
 
 llnode* searchll(ll*list, double val);
+
+double hash(char* str, int* list);
+
+void printLL(ll *list);
+
+#endif

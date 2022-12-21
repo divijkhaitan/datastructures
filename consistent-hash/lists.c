@@ -4,27 +4,25 @@
 #include<string.h>
 #include "lists.h"
 #include <limits.h>
-double hash(char* str, int* list);
-void printLL(ll *list);
-int main()
-{
-    char*arr[10]= {"The","One", "Piece", "tHE", "OnE", "PiEcE", "is", "rEal"};
-    int hashvalues[] = {367, 468};
-    ll* list = malloc(sizeof(ll));
-    list->head = NULL;
-    list->tail = NULL;
-    for(int i = 0; i < 9; i++)
-    {
-        add(list, arr[i], hashvalues);
-        printLL(list);
-    }
-    return 0;
-}
+// int main()
+// {
+//     char*arr[10]= {"The","One", "Piece", "tHE", "OnE", "PiEcE", "is", "rEal"};
+//     int hashvalues[] = {367, 468};
+//     ll* list = malloc(sizeof(ll));
+//     list->head = NULL;
+//     list->tail = NULL;
+//     for(int i = 0; i < 9; i++)
+//     {
+//         add(list, arr[i], hashvalues);
+//         printLL(list);
+//     }
+//     return 0;
+// }
 
 void add(ll* list, char* id, int* hashvalues)
 {
     llnode* temp = malloc(sizeof(llnode));
-    temp->id = malloc(strlen(id)*sizeof(char));
+    temp->id = (char*)malloc((strlen(id)+2)*sizeof(char));
     temp->id = id;
     temp->next =NULL;
     temp->val = hash(id, hashvalues);
@@ -77,6 +75,7 @@ void removeFromLL(ll*list, double val)
     if(temp->val == val)
     {
         list->head = temp->next;
+        free(temp->id);
         free(temp);
         return;
     }
@@ -176,7 +175,7 @@ llnode* pop(ll* list)
 {
     if(list->tail == NULL)
     {
-        return;
+        return NULL;
     }
     llnode* temp = list->tail;
     removeFromLL(list, temp->val);
