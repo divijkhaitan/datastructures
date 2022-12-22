@@ -48,6 +48,7 @@ char* randstring(int length)
 
 void case1()
 {
+    //Does the case with one anchor work properly?
     tree* bst = malloc(sizeof(tree));
     bst->root = NULL;
     bst->max = NULL;
@@ -188,7 +189,6 @@ void case3()
 void case4()
 {
     //is load balanced when anchors are duplicated?
-    //Does adding multiple anchors maintain ring property?
     tree* bst = malloc(sizeof(tree));
     bst->root = NULL;
     bst->max = NULL;
@@ -402,7 +402,6 @@ void case8()
 void case9()
 {
     //can all anchors be deleted without problems being caused?
-    //can all keys be deleted without problems being caused?
     tree* bst = malloc(sizeof(tree));
     bst->root = NULL;
     bst->max = NULL;
@@ -438,9 +437,58 @@ void case9()
     free(bst);
 }
 
+void case10()
+{
+    //How many keys are remapped when anchors are deleted
+    tree* bst = malloc(sizeof(tree));
+    bst->root = NULL;
+    bst->max = NULL;
+    bst->min = NULL;
+    bst->ahash = malloc(sizeof(int)*2);
+    bst->khash = malloc(sizeof(int)*2);
+    bst->ahash[0] = rand()%1000+1;
+    bst->khash[0] = rand()%1000+1;
+    bst->ahash[1] = rand()%1000+1;
+    bst->khash[1] = rand()%1000+1;
+    char* str;
+    char* ancharr[] = {"AnchorOne","SecondAnchor","AndThenThereWere3","AnchorNumber4","TheLastOftheAnchors"};
+    char* ancharr1[] = {"1AnchorOne","1SecondAnchor","1AndThenThereWere3","1AnchorNumber4","1TheLastOftheAnchors"};
+    char* ancharr2[] = {"2AnchorOne","2SecondAnchor","2AndThenThereWere3","2AnchorNumber4","2TheLastOftheAnchors"};
+    for(int j = 0; j < 5; j++)
+    {
+        insert(bst,ancharr[j]);
+    }
+    for(int i = 0; i < 50; i++)
+    {
+        str=randstring(10);
+        inskey(bst,str);
+        free(str);
+    }
+    printinorder(bst->root);
+    printf("\n");
+    printf("After Duplicating the anchors");
+    printf("\n");
+    for(int k = 0; k < 5; k++)
+    {
+        insert(bst,ancharr1[k]);
+        insert(bst,ancharr2[k]);
+    }
+    printinorder(bst->root);
+    printf("\n We shall now remove anchors one by one, observing that a relatively small number of keys require remapping");
+    while(bst->root)
+    {
+        printf("\n After removing %s\n",bst->root->id);
+        del(bst,bst->root);
+        printinorder(bst->root);
+    }
+    free(bst->ahash);
+    free(bst->khash);
+    free(bst);
+}
+
+
 int main()
 {
     srand(time(NULL));
-    case9();
     return 0;
 }
